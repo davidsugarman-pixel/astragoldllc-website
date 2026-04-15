@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery — AstraGold LLC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dim: #8a6f2e;
+      --black: #0a0a0a;
+      --dark: #111111;
+      --dark2: #1a1a1a;
+      --dark3: #222222;
+      --text: #e8e0d0;
+      --text-muted: #8a8070;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--black); color: var(--text); font-family: 'Barlow', sans-serif; font-weight: 300; min-height: 100vh; }
+
+    /* NAV */
+    nav {
+      background: var(--dark);
+      border-bottom: 1px solid #2a2a2a;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); text-decoration: none; letter-spacing: 0.05em; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      padding: 5rem 2rem 3rem;
+      text-align: center;
+      border-bottom: 1px solid #1e1e1e;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(201,168,76,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-label { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; color: #fff; margin-bottom: 1rem; }
+    .hero p { color: var(--text-muted); font-size: 1rem; max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+    /* FILTER TABS */
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      padding: 2rem 1rem 0;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: none;
+      border: 1px solid #2a2a2a;
+      color: var(--text-muted);
+      padding: 0.45rem 1.2rem;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--gold-dim); color: var(--text); }
+    .filter-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.05); }
+
+    /* GALLERY GRID */
+    .container { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .gallery-grid {
+      columns: 3;
+      column-gap: 1rem;
+    }
+    @media (max-width: 900px) { .gallery-grid { columns: 2; } }
+    @media (max-width: 500px) { .gallery-grid { columns: 1; } }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      position: relative;
+      cursor: pointer;
+      border-radius: 3px;
+      overflow: hidden;
+      background: var(--dark2);
+      border: 1px solid #2a2a2a;
+    }
+    .gallery-item:hover .overlay { opacity: 1; }
+    .gallery-item img, .gallery-item video {
+      width: 100%;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .gallery-item:hover img, .gallery-item:hover video { transform: scale(1.03); }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .overlay-icon { font-size: 2rem; color: var(--gold); }
+    .video-badge {
+      position: absolute;
+      top: 0.6rem;
+      left: 0.6rem;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+    }
+    .item-caption {
+      padding: 0.7rem 0.9rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid #222;
+    }
+
+    /* EMPTY */
+    .empty { text-align: center; padding: 5rem 2rem; color: var(--text-muted); }
+    .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
+
+    /* ADMIN PANEL */
+    .admin-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+      z-index: 50;
+      transition: background 0.2s;
+    }
+    .admin-toggle:hover { background: var(--gold-light); }
+
+    .admin-panel {
+      display: none;
+      position: fixed;
+      bottom: 5rem;
+      right: 1.5rem;
+      background: var(--dark2);
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      padding: 1.5rem;
+      width: 320px;
+      z-index: 50;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .admin-panel.open { display: block; }
+    .admin-panel-title { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; font-weight: 500; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .form-group input, .form-group select {
+      width: 100%;
+      background: var(--dark3);
+      border: 1px solid #2a2a2a;
+      color: var(--text);
+      padding: 0.65rem 0.9rem;
+      border-radius: 3px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.88rem;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--gold); }
+    .form-group select option { background: var(--dark3); }
+    .btn-add {
+      width: 100%;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 0.75rem;
+      border-radius: 3px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .btn-add:hover { background: var(--gold-light); }
+    .pw-gate { margin-bottom: 1rem; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner { position: relative; max-width: 90vw; max-height: 90vh; }
+    .lightbox-inner img, .lightbox-inner video {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: 2px;
+      display: block;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -2.5rem;
+      right: 0;
+      background: none;
+      border: 1px solid #2a2a2a;
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 2px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox-close:hover { border-color: var(--gold); color: var(--gold); }
+    .lightbox-caption { color: var(--text-muted); font-size: 0.85rem; margin-top: 1rem; text-align: center; }
+
+    /* NAV MOBILE */
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+    }
+
+    footer { border-top: 1px solid #1e1e1e; padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; }
+    footer a { color: var(--gold); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ASTRAGOLD LLC</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="drivers.html">Drivers</a></li>
+    <li><a href="brokers.html">Brokers</a></li>
+    <li><a href="gallery.html" class="active">Gallery</a></li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">On the Road</div>
+  <h1>Gallery</h1>
+  <p>Photos and video clips from AstraGold operations across the country.</p>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterGallery('all', this)">All</button>
+  <button class="filter-btn" onclick="filterGallery('photo', this)">Photos</button>
+  <button class="filter-btn" onclick="filterGallery('video', this)">Videos</button>
+</div>
+
+<div class="container">
+  <div class="gallery-grid" id="galleryGrid"></div>
+  <div class="empty" id="emptyState" style="display:none;">
+    <div class="empty-icon">📸</div>
+    <p>No media yet. Check back soon!</p>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightboxDirect()">✕</button>
+    <div id="lightboxMedia"></div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+<!-- ADMIN TOGGLE -->
+<button class="admin-toggle" id="adminToggle" title="Admin">⚙</button>
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-panel-title">Add Media</div>
+  <div class="pw-gate" id="pwGate">
+    <div class="form-group">
+      <label>Admin Password</label>
+      <input type="password" id="adminPw" placeholder="Password" onkeydown="if(event.key==='Enter')checkAdminPw()"/>
+    </div>
+    <button class="btn-add" onclick="checkAdminPw()">Unlock</button>
+    <div style="font-size:.75rem;color:#c0392b;margin-top:.5rem;display:none;" id="pwError">Wrong password.</div>
+  </div>
+  <div id="addForm" style="display:none;">
+    <div class="form-group">
+      <label>Media URL</label>
+      <input type="url" id="mediaUrl" placeholder="https://drive.google.com/..."/>
+    </div>
+    <div class="form-group">
+      <label>Type</label>
+      <select id="mediaType">
+        <option value="photo">Photo</option>
+        <option value="video">Video</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Caption (optional)</label>
+      <input type="text" id="mediaCaption" placeholder="e.g. Delivery in Phoenix, AZ"/>
+    </div>
+    <button class="btn-add" onclick="addMedia()">Add to Gallery</button>
+    <button class="btn-add" style="background:none;border:1px solid #2a2a2a;color:var(--text-muted);margin-top:.5rem;" onclick="toggleAdmin()">Close</button>
+  </div>
+</div>
+
+<footer>
+  © 2025 AstraGold LLC · <a href="index.html">Home</a> · <a href="blog.html">Blog</a>
+</footer>
+
+<script>
+  const ADMIN_PASSWORD = "carhauler";
+  const STORAGE_KEY = "agllc_gallery_v1";
+  let adminUnlocked = false;
+  let currentFilter = 'all';
+
+  // LOAD
+  function getItems() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+  }
+  function saveItems(items) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  }
+
+  function renderGallery() {
+    const items = getItems();
+    const filtered = currentFilter === 'all' ? items : items.filter(i => i.type === currentFilter);
+    const grid = document.getElementById('galleryGrid');
+    const empty = document.getElementById('emptyState');
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+
+    grid.innerHTML = filtered.map((item, idx) => {
+      const realIdx = items.indexOf(item);
+      if (item.type === 'video') {
+        return `
+          <div class="gallery-item" onclick="openLightbox(${realIdx})">
+            <video src="${item.url}" muted preload="metadata"></video>
+            <div class="video-badge">Video</div>
+            <div class="overlay"><span class="overlay-icon">▶</span></div>
+            ${item.caption ? `<div class="item-caption">${item.caption}</div>` : ''}
+          </div>`;
+      } else {
+        return `
+          <div class="gallery-item" onclick="openLightbox(${realIdx})">
+            <img src="${convertDriveUrl(item.url)}" alt="${item.caption || ''}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect fill=%22%231a1a1a%22 width=%22400%22 height=%22300%22/><text x=%22200%22 y=%22155%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2214%22>Image unavailable</text></svg>'"/>
+            <div class="overlay"><span class="overlay-icon">⊕</span></div>
+            ${item.caption ? `<div class="item-caption">${item.caption}</div>` : ''}
+          </div>`;
+      }
+    }).join('');
+  }
+
+  // Convert Google Drive share URL to direct image URL
+  function convertDriveUrl(url) {
+    const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
+    return url;
+  }
+
+  function convertDriveUrlFull(url) {
+    const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+    return url;
+  }
+
+  // FILTER
+  window.filterGallery = function(type, btn) {
+    currentFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGallery();
+  };
+
+  // LIGHTBOX
+  window.openLightbox = function(idx) {
+    const items = getItems();
+    const item = items[idx];
+    if (!item) return;
+    const media = document.getElementById('lightboxMedia');
+    if (item.type === 'video') {
+      media.innerHTML = `<video src="${item.url}" controls autoplay style="max-width:100%;max-height:80vh;"></video>`;
+    } else {
+      media.innerHTML = `<img src="${convertDriveUrlFull(item.url)}" alt="${item.caption||''}"/>`;
+    }
+    document.getElementById('lightboxCaption').textContent = item.caption || '';
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeLightbox = function(e) {
+    if (e.target === document.getElementById('lightbox')) closeLightboxDirect();
+  };
+  window.closeLightboxDirect = function() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.getElementById('lightboxMedia').innerHTML = '';
+    document.body.style.overflow = '';
+  };
+
+  // ADMIN
+  window.toggleAdmin = function() {
+    const panel = document.getElementById('adminPanel');
+    panel.classList.toggle('open');
+  };
+  document.getElementById('adminToggle').onclick = toggleAdmin;
+
+  window.checkAdminPw = function() {
+    const pw = document.getElementById('adminPw').value;
+    if (pw === ADMIN_PASSWORD) {
+      adminUnlocked = true;
+      document.getElementById('pwGate').style.display = 'none';
+      document.getElementById('addForm').style.display = 'block';
+    } else {
+      document.getElementById('pwError').style.display = 'block';
+    }
+  };
+
+  window.addMedia = function() {
+    const url = document.getElementById('mediaUrl').value.trim();
+    const type = document.getElementById('mediaType').value;
+    const caption = document.getElementById('mediaCaption').value.trim();
+    if (!url) { alert('Please enter a URL.'); return; }
+    const items = getItems();
+    items.unshift({ url, type, caption, addedAt: Date.now() });
+    saveItems(items);
+    document.getElementById('mediaUrl').value = '';
+    document.getElementById('mediaCaption').value = '';
+    renderGallery();
+    document.getElementById('adminPanel').classList.remove('open');
+  };
+
+  renderGallery();
+</script>
+</body>
+</html>
