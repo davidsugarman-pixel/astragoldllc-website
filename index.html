@@ -41,18 +41,22 @@
     .hero-bg::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 80%, rgba(11,18,32,0.3) 0%, transparent 70%),radial-gradient(ellipse 60% 80% at 100% 50%, rgba(11,18,32,0.15) 0%, transparent 60%);}
     .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(11,18,32,0.95) 0%, rgba(11,18,32,0.4) 25%, rgba(11,18,32,0.05) 55%, transparent 100%),linear-gradient(to right, rgba(11,18,32,0.4) 0%, rgba(11,18,32,0.1) 45%, transparent 100%);}
     .hero-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px 256px;}
-    .hero-content{position:relative;z-index:2;max-width:960px;margin:0 auto;width:100%;padding:6rem 2rem 5rem;}
+    .hero-content{position:relative;z-index:2;max-width:960px;margin:0 auto;width:100%;padding:6rem 2rem 4rem;}
+    .hero-bottom{background:var(--navy-2);border-bottom:1px solid var(--border);}
+    .hero-stats-bar{display:flex;justify-content:space-around;align-items:center;max-width:960px;margin:0 auto;padding:1.75rem 2rem;border-bottom:1px solid var(--border);}
+    .stat-block{text-align:center;}
+    .hero-cta-bar{display:flex;gap:1rem;justify-content:center;padding:1.5rem 2rem;max-width:960px;margin:0 auto;}
     .hero-tag{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.35);padding:0.28rem 0.9rem;margin-bottom:1.75rem;}
     .hero-tag::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);}
     .hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.2rem,9vw,6.2rem);font-weight:900;line-height:0.92;color:var(--white);text-transform:uppercase;margin-bottom:1.6rem;text-shadow:0 2px 40px rgba(0,0,0,0.6);letter-spacing:-0.01em;}
     .hero h1 .gold{color:var(--gold);}
     .hero-sub{font-size:1.05rem;color:var(--text);max-width:520px;margin-bottom:2.5rem;font-weight:300;line-height:1.8;text-shadow:0 1px 16px rgba(0,0,0,0.7);}
-    .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;}
+    .hero-cta-bar a{flex:1;text-align:center;}
     .btn-primary{background:var(--gold);color:var(--navy);padding:0.9rem 2.2rem;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:0.92rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;border:2px solid var(--gold);transition:all 0.2s;display:inline-block;}
     .btn-primary:hover{background:transparent;color:var(--gold);transform:translateY(-1px);}
     .btn-secondary{background:transparent;color:var(--white);padding:0.9rem 2.2rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.92rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;border:2px solid rgba(255,255,255,0.3);transition:all 0.2s;display:inline-block;}
     .btn-secondary:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px);}
-    .hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;padding-top:2rem;border-top:1px solid rgba(201,168,76,0.2);}
+
     .stat-num{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:900;color:var(--gold);line-height:1;}
     .stat-label{font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.3rem;}
     .compliance{background:var(--navy-3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
@@ -152,12 +156,13 @@
       .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
       .hamburger.open span:nth-child(2){opacity:0;}
       .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
-      .hero-content{padding:3.5rem 1.25rem 2rem;}
+      .hero-content{padding:3.5rem 1.25rem 3rem;}
       .hero h1{font-size:clamp(2.6rem,11vw,3.8rem);}
-      .hero-stats{gap:0;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(201,168,76,0.2);}
-      .hero-stats > div{padding:1rem 0.75rem;border-bottom:1px solid rgba(201,168,76,0.1);}
-      .hero-actions{flex-direction:column;background:rgba(11,18,32,0.5);padding:1rem;border-radius:4px;backdrop-filter:blur(4px);}
-      .btn-primary,.btn-secondary{text-align:center;width:100%;padding:0.8rem 1.5rem;}
+      .hero-stats-bar{flex-wrap:wrap;gap:0;display:grid;grid-template-columns:1fr 1fr;padding:1rem;}
+      .stat-block{padding:0.75rem;border-bottom:1px solid var(--border);}
+      .hero-cta-bar{flex-direction:column;padding:1rem;}
+
+      .btn-primary,.btn-secondary{text-align:center;width:100%;}
       .hero-bg{background-position:42% 50% !important;}
       section{padding:3.5rem 1.25rem;}
       .deal-grid,.testimonials-grid,.req-grid,.ops-grid{grid-template-columns:1fr;}
@@ -235,16 +240,19 @@
       <div class="reveal"><span class="hero-tag">Owner-Operator Program &middot; Renton, WA</span></div>
       <h1 class="reveal">Your Truck.<br><span class="gold">Your Business.</span><br>Our Authority.</h1>
       <p class="hero-sub reveal">We&#39;re not looking for drivers. We&#39;re looking for owner-operators who already know how to run &mdash; and want a carrier that stays out of their way.</p>
-      <div class="hero-actions reveal">
-        <a href="#apply" class="btn-primary">Apply Now</a>
-        <a href="#deal" class="btn-secondary">See The Deal</a>
-      </div>
-      <div class="hero-stats reveal">
-        <div><div class="stat-num">85%</div><div class="stat-label">Your Split</div></div>
-        <div><div class="stat-num">Weekly</div><div class="stat-label">Settlements</div></div>
-        <div><div class="stat-num">2&ndash;3hr</div><div class="stat-label">Response Time</div></div>
-        <div><div class="stat-num">48</div><div class="stat-label">States</div></div>
-      </div>
+    </div>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-stats-bar">
+      <div class="stat-block"><div class="stat-num">85%</div><div class="stat-label">Your Split</div></div>
+      <div class="stat-block"><div class="stat-num">Weekly</div><div class="stat-label">Settlements</div></div>
+      <div class="stat-block"><div class="stat-num">2&ndash;3hr</div><div class="stat-label">Response Time</div></div>
+      <div class="stat-block"><div class="stat-num">48</div><div class="stat-label">States</div></div>
+    </div>
+    <div class="hero-cta-bar">
+      <a href="#apply" class="btn-primary">Apply Now</a>
+      <a href="#deal" class="btn-secondary">See The Deal</a>
     </div>
   </div>
 
