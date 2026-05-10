@@ -140,9 +140,11 @@
     .footer-contact a:hover{color:var(--gold);}
     .footer-bottom{max-width:960px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);font-size:0.72rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
     @media(max-width:768px){
-      nav{padding:0 1rem;}
+      nav{padding:0.4rem 0.75rem;height:auto;min-height:60px;flex-wrap:wrap;gap:0.25rem;}
       .nav-logo-text{display:none;}
-      .nav-links a{padding:0.35rem 0.5rem;font-size:0.72rem;}
+      .nav-links{flex-wrap:wrap;gap:0.15rem;}
+      .nav-links a{padding:0.25rem 0.45rem;font-size:0.68rem;}
+      .nav-links li:has(a[href="https://www.mypreciouscargo.us"]){display:none;}
       .hero-content{padding:4rem 1.25rem 3.5rem;}
       .hero h1{font-size:clamp(2.6rem,11vw,3.8rem);}
       .hero-stats{gap:1.5rem;}
@@ -205,6 +207,7 @@
     <ul class="nav-links">
       <li><a href="#deal">The Deal</a></li>
       <li><a href="#drivers">Drivers</a></li>
+      <li><a href="#brokers">Brokers</a></li>
       <li><a href="#brokers">Brokers</a></li>
           <li><a href="#faq">FAQ</a></li>
       <li><a href="https://www.mypreciouscargo.us" target="_blank" rel="noopener" style="color:var(--gold-light);border:1px solid rgba(201,168,76,0.4);border-radius:2px;">Ship a Car</a></li>
