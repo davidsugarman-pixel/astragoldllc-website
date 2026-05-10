@@ -379,7 +379,7 @@
       <h2 class="section-title reveal">What You Need to Qualify</h2>
       <p class="section-sub reveal">We&#39;re selective because our reputation depends on every driver in the fleet. If you check these boxes, let&#39;s talk.</p>
       <div class="req-grid">
-        <div class="req-item reveal"><div class="req-check"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="req-text">Valid CDL (Class A)</span></div>
+        <div class="req-item reveal"><div class="req-check"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="req-text">CDL Class A <em style="color:var(--muted);font-style:normal;">— or Non-CDL with 1–2 car trailer setup</em></span></div>
         <div class="req-item reveal"><div class="req-check"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="req-text">Own truck &amp; car hauling trailer</span></div>
         <div class="req-item reveal"><div class="req-check"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="req-text">Minimum 1 year car hauling experience</span></div>
         <div class="req-item reveal"><div class="req-check"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="req-text">Valid medical card</span></div>
@@ -522,7 +522,19 @@
               <div class="form-group"><label for="phone">Phone Number *</label><input type="tel" id="phone" name="phone" required placeholder="(253) 555-0100"/></div>
               <div class="form-group"><label for="email">Email *</label><input type="email" id="email" name="email" required placeholder="john@email.com"/></div>
               <div class="form-group"><label for="zip">Home Zip Code *</label><input type="text" id="zip" name="home_zip" required placeholder="98055"/></div>
-              <div class="form-group"><label for="cdl">CDL State *</label><input type="text" id="cdl" name="cdl_state" required placeholder="WA"/></div>
+              <div class="form-group">
+                <label for="license_type">License Type *</label>
+                <select id="license_type" name="license_type" required onchange="toggleCDLState(this.value)">
+                  <option value="" disabled selected>Select license type</option>
+                  <option value="CDL-A">CDL Class A</option>
+                  <option value="Non-CDL">Non-CDL</option>
+                  <option value="None">No License Yet</option>
+                </select>
+              </div>
+              <div class="form-group" id="cdl-state-group" style="display:none;">
+                <label for="cdl">CDL State</label>
+                <input type="text" id="cdl" name="cdl_state" placeholder="WA"/>
+              </div>
               <div class="form-group form-full">
                 <label for="experience">Years of Car Hauling Experience *</label>
                 <select id="experience" name="experience" required>
@@ -533,7 +545,7 @@
                   <option value="10+">10+ years</option>
                 </select>
               </div>
-              <div class="form-group form-full"><label for="equipment">Describe Your Equipment</label><input type="text" id="equipment" name="equipment" placeholder="e.g. 2019 Peterbilt 579 + 7-car Cottrell"/></div>
+              <div class="form-group form-full"><label for="equipment">Describe Your Equipment</label><input type="text" id="equipment" name="equipment" placeholder="e.g. 2019 Peterbilt 579 + 7-car Cottrell, or F-350 + 2-car trailer"/></div>
               <div class="form-group form-full"><label for="message">Anything Else We Should Know?</label><textarea id="message" name="message" placeholder="Schedule preferences, desired area, questions..."></textarea></div>
             </div>
             <button type="submit" class="form-submit">Submit Application &#10148;</button>
@@ -631,6 +643,11 @@
     });
   </script>
   <script>
+    function toggleCDLState(val) {
+      const group = document.getElementById('cdl-state-group');
+      group.style.display = val === 'CDL-A' ? 'block' : 'none';
+    }
+
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
     hamburger.addEventListener('click', () => {
